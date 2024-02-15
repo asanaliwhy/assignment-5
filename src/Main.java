@@ -1,4 +1,4 @@
-package Assignment_5;
+package Assignment_3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,51 +7,48 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        AnimalDataAccessObject animalDAO = new AnimalDataAccessObject();
+        AirplaneDataAccessObject airplaneDAO = new AirplaneDataAccessObject();
 
-        // Input info for DB by Scanner
+      
         Scanner scan = new Scanner(System.in);
-        System.out.println("Input NAME, SPECIES, AGE, Status by spaces:");
+        System.out.println("Input NAME, MODEL, AGE, STATUS by spaces:");
         String input1 = scan.nextLine();
-        // Spliting elemnts
+      
         String[] dbArguments = input1.split(" ");
 
-        // adding entered element to db and Parsing AGE to int
-        animalDAO.addAnimal(dbArguments[0], dbArguments[1], Integer.parseInt(dbArguments[2]), dbArguments[3]);
+        airplaneDAO.addAirplane(dbArguments[0], dbArguments[1], Integer.parseInt(dbArguments[2]), dbArguments[3]);
 
-        // adding animals by addAnimal function from AnimalDataAccessObject class
-        animalDAO.addAnimal("Bulochka", "Cat", 2, "Available");
-        animalDAO.addAnimal("Ponchik", "Dog", 4, "Adopted");
-        animalDAO.addAnimal("Rizhik", "Cat", 1, "Available");
-        animalDAO.addAnimal("Korzhik", "Dog", 1, "Available");
+      
+        airplaneDAO.addAirplane("Boeing747", "Passenger", 5, "Available");
+        airplaneDAO.addAirplane("AirbusA380", "Cargo", 3, "Adopted");
+        airplaneDAO.addAirplane("Cessna172", "Private", 2, "Available");
+        airplaneDAO.addAirplane("EmbraerE190", "Passenger", 1, "Available");
 
-        //Getting all animals as a List
-        List<Animal> animalsList = animalDAO.getAnimals();
-        System.out.println("All animals: " + animalsList);
+      
+        List<Airplane> airplanesList = airplaneDAO.getAirplanes();
+        System.out.println("All airplanes: " + airplanesList);
 
-        // Updating one animal(Bulochka was adopted)
-        animalDAO.updateAnimal(2, "Bulochka", "Cat", 2, "Adopted");
+        
+        airplaneDAO.updateAirplane(2, "Boeing747", "Passenger", 5, "Adopted");
 
-        // Printing updated info
-        animalsList = animalDAO.getAnimals();
-        System.out.println("Updated animals: " + animalsList);
+       
+        airplanesList = airplaneDAO.getAirplanes();
+        System.out.println("Updated airplanes: " + airplanesList);
 
-        System.out.println("ANMAL STATUS for 0 el: " + animalsList.get(0).getStatus() + " NAME: " + animalsList.get(0).getName());
+        System.out.println("AIRPLANE STATUS for 0 el: " + airplanesList.get(0).getStatus() + " NAME: " + airplanesList.get(0).getName());
 
-        //Deleting adopted animals
-        for (int i = 0; i < animalsList.size(); i++){
-            if (Objects.equals(animalsList.get(i).getStatus(), "Adopted")){
-                System.out.println(" Deleted animal: "+animalsList.get(i) + ". YES THIS ANIMAL WAS ADOPTED!!! :) ");
-                animalDAO.deleteAnimal(animalsList.get(i).getId());
+        for (int i = 0; i < airplanesList.size(); i++) {
+            if (Objects.equals(airplanesList.get(i).getStatus(), "Adopted")) {
+                System.out.println(" Deleted airplane: " + airplanesList.get(i) + ". YES THIS AIRPLANE WAS ADOPTED!!! :) ");
+                airplaneDAO.deleteAirplane(airplanesList.get(i).getId());
             }
         }
 
-        //Final list with Available animals
-        animalsList = animalDAO.getAnimals();
-        System.out.println("Final animals: " + animalsList);
+        
+        airplanesList = airplaneDAO.getAirplanes();
+        System.out.println("Final airplanes: " + airplanesList);
 
-        //closing connection with DB for security, preventing connection leaks and freeing up resources
 
-        animalDAO.closeConnection();
+        airplaneDAO.closeConnection();
     }
 }
