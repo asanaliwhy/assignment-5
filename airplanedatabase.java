@@ -4,12 +4,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class AnimalDataAccessObject {
+public class AirplaneDataAccessObject {
     private Connection connection;
 
-    // connection from DB to JAVA with jdbc
-    public AnimalDataAccessObject() {
+    
+    public AirplaneDataAccessObject() {
         try {
             String url = key.getUrl();
             String user = key.getUser();
@@ -20,15 +19,14 @@ public class AnimalDataAccessObject {
         }
     }
 
-    // adding Animals to DB
-    // prepearedStatement - the most popular feature for adding/updating some statements as a request for something
-    public void addAnimal (String name, String species, int age, String status) {
+   
+    public void addAirplane(String name, String model, int age, String status) {
         try {
-            String query = "INSERT INTO animals (name, species, age, status) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO airplanes (name, model, age, status) VALUES (?, ?, ?, ?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, name);
-            preparedStatement.setString(2, species);
+            preparedStatement.setString(2, model);
             preparedStatement.setInt(3, age);
             preparedStatement.setString(4, status);
             preparedStatement.executeUpdate();
@@ -38,13 +36,13 @@ public class AnimalDataAccessObject {
         }
     }
 
-    // Getting list of Animals
-    public List<Animal> getAnimals(){
-        // creating list for all animals
-        List<Animal> animals = new ArrayList<>();
+   
+    public List<Airplane> getAirplanes(){
+        // creating list for all airplanes
+        List<Airplane> airplanes = new ArrayList<>();
 
         try{
-            String query = "SELECT * FROM animals";
+            String query = "SELECT * FROM airplanes";
 
             // by statement, I can get values of fields such us "id", "name" and etc
             Statement statement = connection.createStatement();
@@ -52,29 +50,29 @@ public class AnimalDataAccessObject {
             while (resultSet.next()){
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
-                String species = resultSet.getString("species");
+                String model = resultSet.getString("model");
                 int age = resultSet.getInt("age");
                 String status = resultSet.getString("status");
-                animals.add(new Animal(id, name, species, age, status));
+                airplanes.add(new Airplane(id, name, model, age, status));
             }
 
         }catch (SQLException e){
             e.printStackTrace();
         }
 
-        // returning animals list
-        return animals;
+     
+        return airplanes;
     }
 
-    // Updating animal
-    public void updateAnimal(int id, String name, String species, int age, String status){
+    
+    public void updateAirplane(int id, String name, String model, int age, String status){
         try {
-            String query = "UPDATE animals SET name=?, species=?, age=?, status=? WHERE id=?";
+            String query = "UPDATE airplanes SET name=?, model=?, age=?, status=? WHERE id=?";
 
-            // Same thing as in ADDING Animals, but for updating
+            // Same thing as in ADDING Airplanes, but for updating
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, name);
-            preparedStatement.setString(2, species);
+            preparedStatement.setString(2, model);
             preparedStatement.setInt(3, age);
             preparedStatement.setString(4, status);
             preparedStatement.setInt(5, id);
@@ -85,10 +83,10 @@ public class AnimalDataAccessObject {
         }
     }
 
-    // Delete animal
-    public void deleteAnimal(int id){
+    // Delete airplane
+    public void deleteAirplane(int id){
         try{
-            String query = "DELETE FROM animals WHERE id=?";
+            String query = "DELETE FROM airplanes WHERE id=?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, id);
@@ -98,12 +96,12 @@ public class AnimalDataAccessObject {
         }
     }
 
-    // CLOSING connection
+  
     public void closeConnection(){
         try {
             // (clearing table) truncate almost the same us DELETE FROM table_name but faster
-            String query = "truncate animals";
-            String queryID = "ALTER SEQUENCE animals_id_seq RESTART WITH 1;";
+            String query = "truncate airplanes";
+            String queryID = "ALTER SEQUENCE airplanes_id_seq RESTART WITH 1;";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             PreparedStatement preparedStatement1 = connection.prepareStatement(queryID);
 
